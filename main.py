@@ -41,21 +41,24 @@ def sep_searcher(txt):
 
 
 def id_searcher(txt):
-    id_stringer = '[a-zA-Z]+$|[a-zA-Z]+[0-9]+$'
-    k_word_search = re.search("^int$|^if$|^else$|^float$", i)
-    id_search = re.search(id_stringer, i)
+    id_stringer = ""
+    k_word_search = re.search("^int$|^if$|^else$|^float$", txt)
+    id_search = re.search(r'[A-Z|a-z]+\d+|[a-z|A-Z]+', txt)
 
-    if k_word_search:
+    if not k_word_search:
+        if id_search:
+            return True
+    else:
         return False
-    elif id_search:
-        return True
 
 def lit_searcher(txt):
     lit_stringer = '\".*\"'
-    floatstuff = '[+-]?([0-9]*[.])[0-9]+'  # float (consists of 1 or more digits before and after decimal point)
-    intstuff = '^[-+]?\d+$'
-    lit_search = re.search(lit_stringer or floatstuff or intstuff, txt)
-    if lit_search:
+    floatstuff = '([0-9]*[.])[0-9]+'  # float (consists of 1 or more digits before and after decimal point)
+    intstuff = '^[0-9]+$'
+    lit_search1 = re.search(intstuff, txt)
+    lit_search2 = re.search(floatstuff, txt)
+    lit_search3 = re.search(lit_stringer, txt)
+    if lit_search1 or lit_search2 or lit_search3:
         return True
     else:
         return False
@@ -114,21 +117,21 @@ def CutOneLineTokens(tinyPieLine):
 
         if kwordsearch:
             k_word = i
-            print(k_word)
+            # print(k_word)
         if opersearch:
             oper = i
-            print(oper)
+            # print(oper)
         if sepsearch:
             sep = i
             if sep[0] == "\"":
                 sep = "\""
-            print(sep)
+            # print(sep)
         if idsearch:
             identifiers = i
-            print(identifiers)
+            # print(identifiers)
         if litsearch:
             lit = i
-            print(lit)
+            # print(lit)
 
     print("<type, token> list: [<key," + k_word + ">, <id," + identifiers + ">, <op," + oper + ">, <lit," + lit + ">]")
 
